@@ -1,27 +1,37 @@
 package bitstorage;
 
-import algorithm.Config;
+import java.util.function.BooleanSupplier;
 
-import java.util.Random;
+//NOTE: make sure the storage is volatile
+public abstract class BitStorage{
+	public final int width, height;
 
-public interface BitStorage{
+	public BitStorage(int width, int height){
+		this.width = width;
+		this.height = height;
+	}
 
-	boolean get(int row, int column);
+	public abstract BitStorage makeClone();
 
-	default boolean getSafe(int row, int column){
-		if(row < 0 || column < 0 || row >= Config.MATRIX_HEIGHT || column >= Config.MATRIX_WIDTH)
+	public abstract boolean get(int row, int column);
+
+	public boolean getSafe(int row, int column){
+		if(row < 0 || column < 0 || row >= height || column >= width)
 			return false;
 		return get(row, column);
 	}
 
-	void set(int row, int column, boolean living);
+	public abstract void set(int row, int column, boolean living);
 
-	default void randomize(long seed){
-		Random random = new Random(seed);
-		for(int i = 0; i < Config.MATRIX_HEIGHT; i++){
-			for(int j = 0; j < Config.MATRIX_WIDTH; j++){
-				set(i,j,random.nextBoolean());
+	public void populate(BooleanSupplier supplier){
+		for(int i = 0; i < height; i++){
+			for(int j = 0; j < width; j++){
+				set(i,j,supplier.getAsBoolean());
 			}
 		}
+	}
+
+	public interface StorageConstructor{
+		BitStorage construct(int width, int height);
 	}
 }

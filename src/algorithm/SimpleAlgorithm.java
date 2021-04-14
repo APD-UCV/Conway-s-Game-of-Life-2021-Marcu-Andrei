@@ -2,29 +2,34 @@ package algorithm;
 
 import bitstorage.BitStorage;
 
-public class SimpleAlgorithm implements Algorithm{
+public class SimpleAlgorithm extends Algorithm<BitStorage>{
+
+	public SimpleAlgorithm(BitStorage storage){
+		super(storage);
+	}
+
 	@Override
-	public void compute(BitStorage current, BitStorage next){
-		for(int i = 0; i < Config.MATRIX_HEIGHT; i++){
-			for(int j = 0; j < Config.MATRIX_WIDTH; j++){
+	public void compute(){
+		for(int row = 0; row < current.height; row++){
+			for(int column = 0; column < current.width; column++){
 				//count cells
 				int cells = 0;
-				for(int y = i - 1; y <= i + 1; y++){
-					for(int x = j - 1; x <= j + 1; x++){
-						if(current.getSafe(y, x)){
+				for(int nRow = row - 1; nRow <= row + 1; nRow++){
+					for(int nColumn = column - 1; nColumn <= column + 1; nColumn++){
+						if(current.getSafe(nRow, nColumn)){
 							cells++;
 						}
 					}
 				}
 				switch(cells){
 					case 3:
-						next.set(i,j,true);
+						next.set(row, column,true);
 						break;
 					case 4:
-						next.set(i,j,current.get(i,j));
+						next.set(row, column, current.get(row,column));
 						break;
 					default:
-						next.set(i,j,false);
+						next.set(row, column,false);
 				}
 			}
 		}

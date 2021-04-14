@@ -1,10 +1,18 @@
 package bitstorage;
 
-public class DebugStorage implements BitStorage{
+import java.util.function.BooleanSupplier;
+
+public class DebugStorage extends BitStorage{
 	final boolean value;
 
-	public DebugStorage(boolean value){
+	public DebugStorage(int width, int height, boolean value){
+		super(width, height);
 		this.value = value;
+	}
+
+	@Override
+	public DebugStorage makeClone(){
+		return new DebugStorage(width, height, value);
 	}
 
 	@Override
@@ -16,5 +24,5 @@ public class DebugStorage implements BitStorage{
 	public void set(int row, int column, boolean living){}
 
 	@Override
-	public void randomize(long seed){}
+	public void populate(BooleanSupplier supplier){}
 }

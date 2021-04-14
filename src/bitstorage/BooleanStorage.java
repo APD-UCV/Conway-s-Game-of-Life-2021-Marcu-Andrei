@@ -4,8 +4,18 @@ import algorithm.Config;
 
 import java.util.Random;
 
-public class BooleanStorage implements BitStorage{
-	protected final boolean[][] storage = new boolean[Config.MATRIX_HEIGHT][Config.MATRIX_WIDTH];
+public class BooleanStorage extends BitStorage{
+	protected final boolean[][] storage;
+
+	public BooleanStorage(int width, int height){
+		super(width, height);
+		storage = new boolean[height][width];
+	}
+
+	@Override
+	public BooleanStorage makeClone(){
+		return new BooleanStorage(width, height);
+	}
 
 	@Override
 	public boolean get(int row, int column){

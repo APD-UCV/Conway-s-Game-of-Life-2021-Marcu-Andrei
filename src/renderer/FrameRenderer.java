@@ -72,12 +72,12 @@ public class FrameRenderer extends JFrame implements Renderer{
 	}
 
 	void draw(Graphics g){
-		int hOffset = (getWidth() - INTER_PIXEL * Config.MATRIX_WIDTH) / 2;
-		int vOffset = (getHeight() - INTER_PIXEL * Config.MATRIX_HEIGHT) / 2;
+		int hOffset = (getWidth() - INTER_PIXEL * storage.width) / 2;
+		int vOffset = (getHeight() - INTER_PIXEL * storage.height) / 2;
 		synchronized(this){
-			for(int i = 0; i < Config.MATRIX_HEIGHT; i++){
+			for(int i = 0; i < storage.height; i++){
 				int offset = hOffset;
-				for(int j = 0; j < Config.MATRIX_WIDTH; j++){
+				for(int j = 0; j < storage.width; j++){
 					g.setColor(storage.get(i, j)? Config.LIVE_COLOR : Config.DEAD_COLOR);
 					g.fillRect(offset, vOffset, Config.PIXEL_SIZE, Config.PIXEL_SIZE);
 
