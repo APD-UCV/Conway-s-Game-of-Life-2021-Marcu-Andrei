@@ -31,6 +31,7 @@ public class Main{
 	public static void main(String[] args) throws InterruptedException, FileNotFoundException{
 		if(args.length != 1){
 			System.out.println("Path of the folder of inputs must be specified!");
+			return;
 		}
 
 		File folder = new File(args[0]);
