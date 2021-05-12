@@ -31,6 +31,8 @@ public abstract class BitStorage{
 		}
 	}
 
+	public void close(){}
+
 	public interface StorageConstructor{
 		BitStorage construct(int width, int height);
 	}

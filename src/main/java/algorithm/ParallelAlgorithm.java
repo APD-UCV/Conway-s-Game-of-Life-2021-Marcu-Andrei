@@ -72,7 +72,7 @@ public class ParallelAlgorithm extends Algorithm<SplitBitStorage>{
 					int cells = 0;
 					for(int nRow = row - 1; nRow <= row + 1; nRow++){
 						for(int nColumn = column - 1; nColumn <= column + 1; nColumn++){
-							boolean cell = false;
+							boolean cell;
 							if(nRow < 0 || nRow >= storage.height){
 								continue;
 							}

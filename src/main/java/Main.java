@@ -1,54 +1,63 @@
-import algorithm.Algorithm;
-import algorithm.Config;
-import algorithm.ParallelAlgorithm;
-import algorithm.SimpleAlgorithm;
-import bitstorage.BitStorage;
+import algorithm.*;
+import bitstorage.*;
 import bitstorage.BitStorage.StorageConstructor;
-import bitstorage.BooleanStorage;
-import bitstorage.SplitBitStorage;
 import renderer.FrameRenderer;
 import renderer.Renderer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
 
 
-@SuppressWarnings("RedundantSuppression")
+@SuppressWarnings({"RedundantSuppression","RedundantThrows"})
 public class Main{
 	static BitStorage storage;
 
-	static StorageConstructor SCSconstr =  ((width, height) -> new SplitBitStorage(width,height, BooleanStorage::new));
+	static StorageConstructor CDSconstr = CUDAStorage::new; //((width, height) -> new SplitBitStorage(width,height, BooleanStorage::new));
 
 	@SuppressWarnings("rawtypes")
 	static Algorithm algorithm;
 
-	//static Renderer renderer = new FrameRenderer();
+	//static Renderer renderer;
 
-	@SuppressWarnings("RedundantThrows")
 	public static void main(String[] args) throws InterruptedException, FileNotFoundException{
 		if(args.length != 1){
-			System.out.println("Path of the folder of inputs must be specified!");
-			return;
+			System.err.println("Path of the folder of inputs must be specified!");
+			System.exit(0);
 		}
+
+		CUDAAlgorithm.initCUDA();
+		//renderer = new FrameRenderer();
 
 		File folder = new File(args[0]);
-		for(File file : folder.listFiles()){
-			float ratio = populate(file, SCSconstr);
+		for(File file : Objects.requireNonNull(folder.listFiles())){
+			try{
+				float ratio = populate(file, CDSconstr);
 
+				//algorithm = new SimpleAlgorithm(storage);
+				//algorithm = new ParallelAlgorithm((SplitBitStorage)storage);
+				algorithm = new CUDAAlgorithm((CUDAStorage)storage);
+
+				run(ratio);
+			} finally{
+				algorithm.close();
+			}
+		}/*
+		try{
+			float ratio = populate(0, CDSconstr);
 			//algorithm = new SimpleAlgorithm(storage);
-			algorithm = new ParallelAlgorithm((SplitBitStorage)storage);
-
+			//algorithm = new ParallelAlgorithm((SplitBitStorage)storage);
+			algorithm = new CUDAAlgorithm((CUDAStorage)storage);
 			run(ratio);
-		}
-		/*
-		float ratio = populate(0, SCSconstr);
-		algorithm = new SimpleAlgorithm(storage);
-		//algorithm = new ParallelAlgorithm((SplitBitStorage)storage);
-		run(ratio);
-		 */
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally{
+			algorithm.close();
+		}*/
+
 		System.exit(0);
 	}
 

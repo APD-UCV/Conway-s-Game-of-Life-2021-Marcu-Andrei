@@ -19,4 +19,9 @@ public class Config{
 	public static final Color DEAD_COLOR = Color.white;
 
 	public static final int[] RUNS = {1000, 10000, 100000};
+
+	// Create the PTX file by calling the NVCC
+	public static final String ptxFileName = "kernels/GOLKernel.ptx";
+	public static final int blockSizeX = 20;
+	public static final int blockSizeY = 20;
 }

@@ -24,6 +24,7 @@ public class FrameRenderer extends JFrame implements Renderer{
 		setVisible(true);
 		createBufferStrategy(2);
 		bs = getBufferStrategy();
+		//TODO: call close on exit;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 

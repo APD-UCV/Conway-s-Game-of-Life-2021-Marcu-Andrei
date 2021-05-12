@@ -22,4 +22,13 @@ public abstract class Algorithm<T extends BitStorage>{
 	public T getStorage(){
 		return current;
 	}
+
+	public void close(){
+		if(current != null){
+			current.close();
+		}
+		if(next != null){
+			next.close();
+		}
+	}
 }
